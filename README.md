@@ -42,15 +42,19 @@ The result will be a list of dictionaries keyed by label with corresponding pred
 
 ## Example
 
+You can invoke this model on Baseten with the following cURL command (just fill in the model version ID and API Key):
+
 ```
-In [1]: import truss
-In [2]: handle = truss.load(".")
-In [3]: handle.predict({"image_url": "https://source.unsplash.com/gKXKBY-C-Dk/300x300", "labels": ["small cat", "not cat", "big cat"]})
-100%|███████████████████████████████████████| 338M/338M [00:19<00:00, 17.8MiB/s]
-Out[3]: 
-{'status': 'success',
- 'data': {'predictions': [{'small cat': 0.5626448,
-    'not cat': 0.36815068,
-    'big cat': 0.069204606}]},
- 'message': None}
+$ curl -X POST https://app.staging.baseten.co/model_versions/{MODEL_VERSION_ID}/predict \
+    -H 'Authorization: Api-Key {YOUR_API_KEY}' \
+    -d '{"image_url": "https://source.unsplash.com/gKXKBY-C-Dk/300x300", "labels": ["small cat", "not cat", "big cat"]}'
+{
+    "model_id": "V0NnJ0y",
+    "model_version_id": "yqvx4rw",
+    "model_output": {
+        "status": "success",
+        "data": {"predictions": [{"small cat": 0.56201171875, "not cat": 0.36865234375, "big cat": 0.06927490234375}]},
+        "message": null
+    }
+}
 ```
