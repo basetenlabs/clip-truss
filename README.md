@@ -7,13 +7,26 @@ relevant provided labels, without being specifically trained for that task.
 
 Packaging this model in a Truss makes it easy to deploy it on hosting providers.
 
+# Deploying on Baseten
+
+To deploy this Truss on Baseten, first install the Baseten client:
+
+```
+$ pip install baseten
+```
+
+Then, in a Python shell, you can do the following to have an instance of CLIP deployed
+on Baseten:
+
+```python
+import baseten
+import truss
+
+clip_handle = truss.load(".")
+baseten.deploy(clip_handle, model_name="CLIP")
+```
+
 # Usage
-
-Note that to use this, you will have to have `truss` installed. This can be installed with pip:
-
-```
-$ pip install truss
-```
 
 ## Inputs
 The input should be a dictionary. It should contain the following:
@@ -40,23 +53,4 @@ Out[3]:
     'not cat': 0.36815068,
     'big cat': 0.069204606}]},
  'message': None}
-```
-
-# Deploying on Baseten
-
-To deploy this Truss on Baseten, first install the Baseten client:
-
-```
-$ pip install baseten
-```
-
-Then, in a Python shell, you can do the following to have an instance of CLIP deployed
-on Baseten:
-
-```python
-import baseten
-import truss
-
-bark_handle = truss.load(".")
-baseten.deploy(bark_handle, model_name="Bark")
 ```
