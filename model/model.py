@@ -24,8 +24,7 @@ class Model:
         self._model, self._model_preprocesser = clip.load(DEFAULT_CLIP_MODEL, device=self._device)
 
     def preprocess(self, request: Dict) -> Dict:
-        for instance in request["instances"]:
-            self._map_image_url_to_array_in_instance(instance)
+        self._map_image_url_to_array(request)
         return request
 
     def postprocess(self, request: Dict) -> Dict:
@@ -34,30 +33,30 @@ class Model:
     def predict(self, request: Dict) -> Dict[str, List]:
         try:
             return {
-                "predictions": [self._predict_single(instance) for instance in request["instances"]]
+                "status": "success", "data": self._predict_single(request), "message": None
             }
-        except Exception as e:
-            raise Exception("Failed to predict") from e
+        except Exception as exc:
+            return {"status": "error", "data": None, "message": str(exc)}
 
-    def _predict_single(self, instance: Dict):
+    def _predict_single(self, request: Dict):
         image = (
             self._model_preprocesser(
-                Image.fromarray(np.array(instance["image"], ndmin=3, dtype=np.dtype("uint8")))
+                Image.fromarray(np.array(request["image"], ndmin=3, dtype=np.dtype("uint8")))
             )
             .unsqueeze(0)
             .to(self._device)
         )
-        text = clip.tokenize(instance["labels"]).to(self._device)
+        text = clip.tokenize(request["labels"]).to(self._device)
         with torch.no_grad():
             self._model.encode_image(image)
             self._model.encode_text(text)
             logits_per_image, logits_per_text = self._model(image, text)
             [probs] = logits_per_image.softmax(dim=-1).cpu().numpy()
-            return {"predictions": [dict(zip(instance["labels"], probs))]}
+            return {"predictions": [dict(zip(request["labels"], probs))]}
 
-    def _map_image_url_to_array_in_instance(self, instance: Dict) -> Dict:
-        if "image" not in instance and "image_url" in instance:
-            image_url = instance["image_url"]
+    def _map_image_url_to_array(self, request: Dict) -> Dict:
+        if "image" not in request and "image_url" in request:
+            image_url = request["image_url"]
             response = requests.get(image_url)
             image = Image.open(BytesIO(response.content))
-            instance["image"] = np.asarray(image)
+            request["image"] = np.asarray(image)
