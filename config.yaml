@@ -13,7 +13,7 @@ model_metadata:
   tags:
   - image-classification
 model_module_dir: model
-model_name: clip
+model_name: "CLIP: Connecting text and images"
 python_version: py39
 requirements:
   - torchvision==0.8.2
