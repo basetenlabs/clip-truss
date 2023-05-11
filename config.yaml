@@ -4,7 +4,14 @@ model_class_filename: model.py
 model_class_name: Model
 model_framework: custom
 model_type: custom
-model_metadata: {}
+description: > 
+  This model provides zero-shot-like functionality for classifying images. This is an
+  implementation of the CLIP (Contrastive Language-Image Pre-Training)
+  neural network that has been trained on image and text pairs by OpenAI.
+model_metadata:
+  pretty_name: "CLIP: Connecting text and images"
+  tags:
+  - image-classification
 model_module_dir: model
 model_name: clip
 python_version: py39

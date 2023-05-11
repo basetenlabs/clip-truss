@@ -38,7 +38,7 @@ And one of
 
 ## Outputs
 
-The result will be a list of dictionaries keyed by label with corresponding prediction scores.
+The result will a dictionary keyed by label with corresponding prediction scores.
 
 ## Example
 
