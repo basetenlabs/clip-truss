@@ -6,7 +6,8 @@ model_framework: custom
 model_type: custom
 description: Classify images with zero-shot-like functionality.
 model_metadata:
-  pretty_name: "CLIP: Connecting text and images"
+  avatar_url: https://cdn.baseten.co/production/static/explore/openai.png
+  cover_image_url: https://cdn.baseten.co/production/static/explore/clip.png
   tags:
   - image-classification
 model_module_dir: model
